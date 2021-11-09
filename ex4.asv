@@ -1,0 +1,1 @@
+b = (sign(randn(N, 1)) + 1)
