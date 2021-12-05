@@ -3,8 +3,6 @@ function [X, x_t] = generate_x_function(Xn, phi, phi_t, T, over)
     Ts = T/over;
     N = length(Xn);
     
-    x_t_axis = [0:Ts:T];
-    
     Xd = 1/Ts * upsample(Xn, over);
     td = [0:Ts:N*T - Ts];
     
