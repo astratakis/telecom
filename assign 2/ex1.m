@@ -46,6 +46,85 @@ N = 100;                    % The number of random bits
 
 % Generates N random numbers. Then divide these numbers
 % by 2 and take the sign value of this.
-% This should generate a stream of random -1 and 1 chars.
+% This should generate a stream random 0 and 1 numbers
 bits = (sign(randn(1, N)) + 1) / 2;
 
+% Transform the stream of 0 and 1 bits into -1 and 1 characters
+Xn = bits_to_2PAM(bits);
+
+[X, t_x] = generate_x_function(Xn, phi, t, T, over);
+
+figure(3);
+plot(t_x, X);
+ylabel('X(t)');
+xlabel('t (sec)');
+title('X(t) Function');
+
+% Calculate the theoretical spectral power density...
+theoretical_average = (var(Xn)/T).*(abs(PHI).^2);
+
+%%%%%%%%%%%%%%%%% < A3 > %%%%%%%%%%%%%%%%%
+
+% Calculate Fourier transform of X
+FOUR_X = fftshift(fft(X, Nf) * Ts);
+
+% Total time
+T_total = t_x(end) - t_x(1);
+
+% Calculate Px
+PX = (abs(FOUR_X).^2)/T_total;
+
+% Note that NFFT has been calculated earlier.
+
+figure(4);
+subplot(2, 1, 1);
+plot(NFFT, PX);
+xlabel('F (Hz)');
+ylabel('Px(F)');
+title('Px(F) Linear');
+grid on;
+
+subplot(2, 1, 2);
+semilogy(NFFT, PX);
+xlabel('F (Hz)');
+ylabel('Px(F)');
+title('Px(F) Log');
+grid on;
+
+% ---- < variables > ----
+K = 10;                   % The number of random bits
+% -----------------------
+
+% Repeat A2 K times...
+
+total_power = 0;
+
+for i = 1:K
+    
+    bits = (sign(randn(1, N)) + 1)/2;
+    Xn = bits_to_2PAM(bits);
+    
+    [X, t_x] = generate_x_function(Xn, phi, t, T, over);
+    
+    FOUR_X = fftshift(fft(X, Nf) * Ts);
+    % F axis of fourier transform has already been calculated. (see NFFT)
+    
+    T_total = t_x(end) - t_x(1);
+    
+    PX = (abs(FOUR_X).^2)/T_total;
+    
+    total_power = total_power + PX;
+end
+
+% Just calculate the average...
+average_power = total_power / K;
+
+% Plot the results.
+figure(5);
+semilogy(NFFT, average_power);
+hold on;
+semilogy(NFFT, theoretical_average);
+legend('Estimated', 'Theoretical');
+xlabel('F (Hz)');
+ylabel('Sx(F)');
+title('Spectral Power Density');
