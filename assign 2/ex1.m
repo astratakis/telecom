@@ -10,7 +10,7 @@ over = 10;                  % over value
 Ts = T/over;                % Sampling period
 A = 4;                      % Tipespace
 a = 0.5;
-Nf = 4096;                  % Fourier sampling
+Nf = 16384;                 % Who needs RAM anyway?
 % -----------------------
 
 % Generate SRRC Pulse
@@ -47,4 +47,5 @@ N = 100;                    % The number of random bits
 % Generates N random numbers. Then divide these numbers
 % by 2 and take the sign value of this.
 % This should generate a stream of random -1 and 1 chars.
-bits = sign(randn(1, N)/2);
+bits = (sign(randn(1, N)) + 1) / 2;
+
