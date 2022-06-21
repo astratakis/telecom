@@ -22,6 +22,8 @@ f0 = ((1/Ts)/2 - 1/T)/2;
 
 total_power = 0;
 
+total_x = 0;
+
 for i = 1:K
    
     bits = (sign(randn(1, N)) + 1)/2;
@@ -35,16 +37,26 @@ for i = 1:K
     
     FOUR_Y = fftshift(fft(Y, Nf) * Ts);
     T_total = t_x(end) - t_x(1);
-    
     PY = (abs(FOUR_Y).^2)/T_total;
-    
     total_power = total_power + PY;
+    
+    FOUR_X = fftshift(fft(X, Nf) * Ts);
+    
+    PX = (abs(FOUR_X).^2)/T_total;
+    
+    total_x = total_x + PX;
 end
 
 average_power = total_power ./ K;
+average_x = total_x ./ K;
 
 figure(1);
 semilogy(NFFT, average_power);
+hold on;
+semilogy(NFFT, average_x);
+hold off;
 xlabel('F (Hz)');
 ylabel('Sy(F)');
 title('Estimated SPD');
+
+%print('-f1', 'B4', '-dpng')

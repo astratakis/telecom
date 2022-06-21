@@ -38,6 +38,9 @@ ylabel('|\Phi(F)|^2');
 title('Spectral Energy Density');
 grid on;
 
+%print('-f1', 'phi', '-dpng');
+%print('-f2', 'four_phi', '-dpng');
+
 %%%%%%%%%%%%%%%%% < A2 > %%%%%%%%%%%%%%%%%
 
 % ---- < variables > ----
@@ -62,6 +65,8 @@ title('X(t) Function');
 
 % Calculate the theoretical spectral power density...
 theoretical_average = (var(Xn)/T).*(abs(PHI).^2);
+
+%print('-f3', 'x_signal', '-dpng');
 
 %%%%%%%%%%%%%%%%% < A3 > %%%%%%%%%%%%%%%%%
 
@@ -133,6 +138,9 @@ hold off;
 % The difference between K=10 and K=10000 is extreme
 % The accuracy increases with K.
 
+%print('-f4', 'A3a', '-dpng');
+%print('-f5', 'low_k', '-dpng');
+
 %%%%%%%%%%%%%%%%% < A4 > %%%%%%%%%%%%%%%%%
 
 % ---- < variables > ----
@@ -154,14 +162,6 @@ plot(t_x, X);
 xlabel('t (sec)');
 ylabel('X(t)');
 title('X(t) Function');
-
-% Fourier of X wave function
-FOUR_X = fftshift(fft(X, Nf) * Ts);
-
-% Calculate total time
-T_total = t_x(end) - t_x(1);
-
-PX = (abs(FOUR_X).^2)/T_total;
 
 total_power = 0;
 
@@ -194,10 +194,13 @@ ylabel('Sx(F)');
 legend('Estimated', 'Theoretical');
 title('Spectral Power Density');
 
+%print('-f6', 'A4a', '-dpng');
+%print('-f7', 'A4b', '-dpng');
+
 %%%%%%%%%%%%%%%%% < A5 > %%%%%%%%%%%%%%%%%
 
 N = 100;
-K = 500;
+K = 5000;
 
 [phi, t] = srrc_pulse(2*T, 2*over, A, a);
 PHI = fftshift(fft(phi, Nf) * Ts);
@@ -255,3 +258,6 @@ xlabel('F (Hz)');
 ylabel('Sx(F)');
 title('Spectral Power Density');
 legend('Estimated', 'Theoretical');
+
+%print('-f8', 'A5a', '-dpng');
+%print('-f9', 'A5b', '-dpng');
